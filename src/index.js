@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(router)
-const port = process.env.PORT || 8080
+
 
 app.use(Branchrouter)
 
@@ -31,6 +31,6 @@ app.get("/",(req,res)=>{
 })
 
 
-app.listen(port,()=>{
+app.listen(process.env.PORT || 8000,()=>{
     console.log("listning 8000");
 })
