@@ -251,23 +251,30 @@ Branchrouter.get('/branchparcelreport/:branchname', async (req,res)=>{
     })
 })
 
-Branchrouter.get('/branchparcelreport/:branchname/:pstatus/:bdate', async (req,res)=>{
+Branchrouter.get('/branchparcelreport/:branchname/:pstatus/:bdate/:btodate', async (req,res)=>{
     const branchname = req.params.branchname;
     const pstatus = req.params.pstatus;
-    const bdate=moment(req.params.bdate).format('L')
+    const bdate=moment(req.params.bdate).format('L');
+    const btodate=moment(req.params.btodate).format('L')
+    console.log(bdate.toString());
+    console.log(btodate);
     var parceldata=" ";
     var nodata=" ";
     if(pstatus == "Collected"){
          parceldata=await Parcel.find({branchprocessed:branchname})
     }
     else if(pstatus == "Delivered"){
-         parceldata=await DestinationParcel.find({branchprocessed:branchname,parcelstatus:"Received",receivedate:bdate})
+          parceldata=await Parcel.find({branchprocessed:branchname,mainparcelstatus:"Delivered",deliverydate : { $gte: bdate }, deliverydate : { $lte: btodate }})
+        //  parceldata=await Parcel.find({branchprocessed:branchname,mainparcelstatus:"Delivered",: { $gte: bdate }, : { $lte: btodate }})
+        // parceldata=await DestinationParcel.find({branchprocessed:branchname,parcelstatus:"Received",receivedate:{$gte: bdate},receivedate :{ $lte: btodate }})
     }
     else if(pstatus == "Received"){
-         parceldata=await DestinationParcel.find({pickupbranch:branchname,parcelstatus:"Received",receivedate:bdate});
-    }
+         parceldata=await DestinationParcel.find({pickupbranch:branchname,parcelstatus:"Received",receivedate:{ $gte: bdate }, receivedate: { $lte: btodate }});
+//    console.log("parceldata",parceldata);
+        }
     else if(pstatus == "Delivered By Staff"){
-         parceldata = await StaffParcel.find({pickupbranch:branchname,branchparcelstatus:"Delivered",deliverydate:bdate})
+                 parceldata = await StaffParcel.find({pickupbranch:branchname,branchparcelstatus:"Delivered",deliverydate:{$gte:bdate},deliverydate:{$lte:btodate}})
+        //  parceldata = await StaffParcel.find({pickupbranch:branchname,branchparcelstatus:"Delivered",deliverydate:bdate})
     }
     else{
         nodata="No Data";

@@ -199,6 +199,7 @@ Staffrouter.post('/sendotp',async(req,res)=>{
                     host: "smtp.ethereal.email",
                     port: 465,
                     secure: false,
+                    
                     service: 'gmail',
                     auth: {
                         user: 'knzcourier@gmail.com',

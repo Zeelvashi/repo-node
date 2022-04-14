@@ -75,7 +75,10 @@ const parcelSchema=new mongoose.Schema({
     },
     flag:{
         type:Number
-    }
+    },
+    deliverydate:{
+        type:String
+    },
 },{
     timestamps:true
 })
