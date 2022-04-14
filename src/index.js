@@ -26,9 +26,7 @@ app.use(Staffrouter)
 
 app.use(UserRouter)
 
-app.get("/",(req,res)=>{
-    res.send("helloo")
-})
+
 
 
 app.listen(process.env.PORT || 8000,()=>{
